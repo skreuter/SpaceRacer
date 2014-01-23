@@ -47,20 +47,12 @@ SpaceRacer
 2. Team
 
   Stefan Kreuter        Projektleitung
-
   Knüchel Christian     Model
- 
   Brunner Thomas        View
-
   Gift Sebastian        Control
-
   Kleeeis Dominik       Control: Physik
-
   Hackenberg Martin     Control: Kollisionserkennung 
- 
   Bouillon Jan          Leveldesign, Dialogdesign 
- 
   Blank Julius          Leveldesign, Dialogdesign, Sound
- 
   Brock Bernhard        Netzwerk 
 </pre>
