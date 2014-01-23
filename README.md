@@ -1,6 +1,7 @@
 SpaceRacer
 ==========
 
+<pre>
 1. Ant-Befehle
 
 1.1 Kompilieren
@@ -62,3 +63,4 @@ SpaceRacer
   Blank Julius          Leveldesign, Dialogdesign, Sound
  
   Brock Bernhard        Netzwerk 
+</pre>
