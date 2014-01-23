@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  -   Space-Racer Build Script
+  -
+  -   @author Stefan Kreuter
+  -->
+
+<project name="SpaceRacer" default="build">
+
+	<property name="name" value="${ant.project.name}" />
+	<property name="version" value="0.1-alpha" />
+
+	<property name="core" value="src/core" />
+	<property name="server" value="src/server" />
+	<property name="client" value="src/client" />
+	<property name="shared" value="src/shared" />
+	<property name="frames" value="src/frames" />
+	<property name="net" value="src/net" />
+	<property name="test" value="test" />
+	<property name="build" value="build" />
+	<property name="javadoc" value="javadoc" />
+	<property name="lib" value="lib" />
+	<property name="release" value="release" />
+	<property name="MainJar" value="${name}.jar" />
+
+	<target name="compile">
+		<mkdir dir="${build}" />
+
+		<javac destdir="${build}" deprecation="yes" source="1.5" target="1.5" debug="yes" encoding="utf-8">
+			<src path="${core}" />
+			<src path="${server}" />
+			<src path="${client}" />
+			<src path="${shared}" />
+			<src path="${frames}" />
+			<src path="${net}" />
+			<classpath>
+				<fileset dir="lib">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="javadoc">
+		<mkdir dir="javadoc" />
+		<javadoc access="public" author="true" charset="utf-8" classpath="lib/JMF-2.1.1e/lib/jmf.jar:lib/JMF-2.1.1e/lib/customizer.jar:lib/JMF-2.1.1e/lib/multiplayer.jar:lib/JMF-2.1.1e/lib/mediaplayer.jar:lib/xstream/xpp3_min-1.1.3.4.O.jar:lib/swing-layout-1.0.jar:lib/xstream/xstream-1.2.2.jar:lib/jogl/jogl.jar:/opt/eclipse/plugins/org.junit4_4.1.0.1/junit-4.1.jar" destdir="javadoc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="edu.fhm.cs.spaceracing.client.controller,edu.fhm.cs.spaceracing.server.controller.collision,edu.fhm.cs.spaceracing.client.view.hud,edu.fhm.cs.spaceracing.net.tcp.events,edu.fhm.cs.spaceracing.model.config,edu.fhm.cs.spaceracing.net.udp,edu.fhm.cs.spaceracing.frames.layout,edu.fhm.cs.spaceracing.net.udp.internal,edu.fhm.cs.spaceracing.server.controller.events,edu.fhm.cs.spaceracing.frames.menus,edu.fhm.cs.spaceracing.frames.listeners,edu.fhm.cs.spaceracing.model.generic,edu.fhm.cs.spaceracing.server.controller,edu.fhm.cs.spaceracing.model.context,edu.fhm.cs.spaceracing.frames.utils,edu.fhm.cs.spaceracing.client.view.models.milkshapeloader,edu.fhm.cs.spaceracing.client.view.models,edu.fhm.cs.spaceracing.client.view,edu.fhm.cs.spaceracing.client.view.textureloader,edu.fhm.cs.spaceracing.controller,edu.fhm.cs.spaceracing.frames.components,edu.fhm.cs.spaceracing.model.space,edu.fhm.cs.spaceracing.client.view.spaceobjects,edu.fhm.cs.spaceracing.net.udp.exception,edu.fhm.cs.spaceracing.model.level,edu.fhm.cs.spaceracing.client.controller.events,edu.fhm.cs.spaceracing.client.view.spaceFX,edu.fhm.cs.spaceracing.client.sound.menu,edu.fhm.cs.spaceracing.net.tcp,edu.fhm.cs.spaceracing.model.ship" source="1.6"  sourcepath="src/net:src/shared:src/test:src/client:src/core:src/frames:src/server" splitindex="true" use="true" version="true" />
+	</target>
+
+	<target name="build" depends="compile">
+		<jar jarfile="${MainJar}" compress="yes">
+			<fileset dir="${build}" />
+			<manifest>
+				<attribute name="Main-Class" value="edu.fhm.cs.spaceracing.SpaceRacerGame" />
+				<attribute name="Class-Path" value="lib/swing-layout-1.0.jar lib/jogl/jogl.jar lib/xstream/xpp3_min-1.1.3.4.O.jar lib/xstream/xstream-1.2.2.jar lib/JMF-2.1.1e/lib/jmf.jar lib/JMF-2.1.1e/lib/mediaplayer.jar lib/JMF-2.1.1e/lib/multiplayer.jar" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="linux" depends="build">
+		<mkdir dir="${release}" />
+		<tar destfile="${release}/${name}-linux-${version}.tar.gz" compression="gzip">
+			<tarfileset dir="loader/linux" prefix="${name}" mode="755">
+				<include name="SpaceRacer" />
+			</tarfileset>
+			<tarfileset dir="." prefix="${name}">
+				<include name="${MainJar}" />
+				<include name="${lib}/**/*.jar" />
+				<include name="${lib}/jogl/*.txt" />
+				<include name="${lib}/jogl/linux/*" />
+				<include name="sound/**" />
+				<include name="images/**" />
+				<include name="models/**" />
+			</tarfileset>
+		</tar>
+	</target>
+
+	<target name="linux64" depends="build">
+		<mkdir dir="${release}" />
+		<tar destfile="${release}/${name}-linux64-${version}.tar.gz" compression="gzip">
+			<tarfileset dir="loader/linux64" prefix="${name}" mode="755">
+				<include name="SpaceRacer" />
+			</tarfileset>
+			<tarfileset dir="." prefix="${name}">
+				<include name="${MainJar}" />
+				<include name="${lib}/**/*.jar" />
+				<include name="${lib}/jogl/*.txt" />
+				<include name="${lib}/jogl/linux64/*" />
+				<include name="sound/**" />
+				<include name="images/**" />
+				<include name="models/**" />
+			</tarfileset>
+		</tar>
+	</target>
+
+	<target name="win" depends="build">
+		<mkdir dir="${release}" />
+		<zip destfile="${release}/${name}-win32-${version}.zip" compress="yes">
+			<zipfileset dir="loader/win32" prefix="${name}">
+				<include name="SpaceRacer.exe" />
+			</zipfileset>
+			<zipfileset dir="." prefix="${name}">
+				<include name="${MainJar}" />
+				<include name="${lib}/**/*.jar" />
+				<include name="${lib}/jogl/*.txt" />
+				<include name="${lib}/jogl/win32/*" />
+				<include name="sound/**" />
+				<include name="images/**" />
+				<include name="models/**" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="mac" depends="build">
+		<mkdir dir="${release}" />
+		<zip destfile="${release}/${name}-macosx-${version}.zip" compress="yes">
+			<zipfileset dir="loader/macosx" prefix="${name}">
+				<include name="SpaceRacer.app/**" />
+			</zipfileset>
+			<zipfileset dir="." prefix="${name}">
+				<include name="${MainJar}" />
+				<include name="${lib}/**/*.jar" />
+				<include name="${lib}/jogl/*.txt" />
+				<include name="${lib}/jogl/macosx/*" />
+				<include name="sound/**" />
+				<include name="images/**" />
+				<include name="models/**" />
+			</zipfileset>
+		</zip>
+	</target>
+
+	<target name="all" depends="win, linux, linux64, mac" />
+
+	<target name="new" depends="clean, clean-release, all" />
+
+	<target name="run-linux" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/linux" />
+		</java>
+	</target>
+
+	<target name="run-linux64" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/linux64" />
+		</java>
+	</target>
+
+	<target name="run-win" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/win32" />
+		</java>
+	</target>
+
+	<target name="run-mac" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/macosx" />
+		</java>
+	</target>
+
+	<target name="profile-win" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/win32" />
+			<jvmarg value="-Xrunhprof:cpu=times,depth=50,file=profile.txt,cutoff=0" />
+		</java>
+	</target>
+	
+	<target name="profile-linux" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/linux" />
+			<jvmarg value="-Xrunhprof:cpu=times,depth=50,file=profile.txt,cutoff=0" />
+		</java>
+	</target>
+	
+	<target name="profile-linux64" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/linux64" />
+			<jvmarg value="-Xrunhprof:cpu=times,depth=50,file=profile.txt,cutoff=0" />
+		</java>
+	</target>
+
+	<target name="profile-mac" depends="build">
+		<java jar="${MainJar}" fork="true">
+			<sysproperty key="java.library.path" path="${lib}/jogl/macosx" />
+			<jvmarg value="-Xrunhprof:cpu=times,depth=50,file=profile.txt,cutoff=0" />
+		</java>
+	</target>
+
+	<target name="run" depends="run-linux" />
+
+	<target name="clean">
+		<delete file="${MainJar}" />
+		<delete dir="${build}" />
+	</target>
+
+	<target name="clean-release">
+		<delete dir="${release}" />
+	</target>
+
+</project>

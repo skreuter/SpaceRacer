@@ -1,0 +1,11 @@
+build
+javadoc
+release
+sound
+docs
+*.jar
+*.zip
+.classpath
+.fbprefs
+.project
+.settings

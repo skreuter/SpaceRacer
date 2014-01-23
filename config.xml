@@ -1,0 +1,14 @@
+<config>
+  <antiAliasing>0</antiAliasing>
+  <anisotropic>-1</anisotropic>
+  <particleDensityFactor>1.0</particleDensityFactor>
+  <lowPolyModels>false</lowPolyModels>
+  <occlusionTest>true</occlusionTest>
+  <fullscreen>false</fullscreen>
+  <showMenu>true</showMenu>
+  <playMusic>true</playMusic>
+  <limitFPS>true</limitFPS>
+  <drawCollisionSpheres>false</drawCollisionSpheres>
+  <debug>false</debug>
+  <logging>false</logging>
+</config>
